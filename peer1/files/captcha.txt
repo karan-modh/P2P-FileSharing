@@ -1,0 +1,16 @@
+secret key : 6Lc_zKgUAAAAAIyF3-tsFfFwjabmp6vheXCQpRDS
+
+site key   : 6Lc_zKgUAAAAAJh_JzE7ZZg82uGL4_zvWNMjpl72
+
+domain     : schoolease.in
+
+
+
+  <CreateDetail>
+                            <IconButton
+                             color = "inherit"
+                             style = {{ padding: '7px'}}
+                            >
+                            <Add />
+                            </IconButton>
+                          </CreateDetail>
