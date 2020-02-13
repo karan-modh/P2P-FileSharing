@@ -3,8 +3,6 @@ import os
 import pickle
 from settings import SERVERIP,PORT
 
-File_Request = ''
-
 def list_files(conn):
     request = "LIST"
     conn.send(str.encode(request))
@@ -13,7 +11,6 @@ def list_files(conn):
 
 def fetch_by_name(conn):
     request = input("Enter filename to fetch : ")
-    File_Request = request
     conn.send(str.encode(request))
     result = conn.recv(2048)
     if str.encode("NOT FOUND") == result:
@@ -43,10 +40,22 @@ def main():
     s.connect((SERVERIP,PORT))
     ip = central_server_func(s)
     s.close()
-    s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-    s.connect((ip[0],5678))
-    s.send(str.encode(File_Request))
-    
+    if ip:
+        s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        s.connect((ip[0],5678))
+        print("Connected to peer with ip : ",ip[0])
+        File_Request = input("Enter File Name again : ")
+        s.send(str.encode(File_Request))
+        File_Request = "./files/" + File_Request
+        with open(File_Request,'wb') as f:
+            while True:
+                data = s.recv(1024)
+                if not data:
+                    break
+                f.write(data)
+        f.close()
+        print("File Transferred Successgully")
+        s.close()
 
 if __name__ == "__main__":
     main()

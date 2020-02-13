@@ -39,16 +39,23 @@ def main():
     s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     s.connect((SERVERIP,PORT))
     ip = central_server_func(s)
-    
-    # request = input("Enter FileName : ")
-    # s.sendall(str.encode(request))
-    # print(s.recv(1024).decode())
-    # s.sendall(str.encode("bye"))
-    # filePath = "./files"
-    # files = os.listdir(filePath)
-    # print(files)
-    print(ip)
     s.close()
+    if ip:
+        s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        s.connect((ip[0],5678))
+        print("Connected to peer with ip : ",ip[0])
+        File_Request = input("Enter File Name again : ")
+        s.send(str.encode(File_Request))
+        File_Request = "./files/" + File_Request
+        with open(File_Request,'wb') as f:
+            while True:
+                data = s.recv(1024)
+                if not data:
+                    break
+                f.write(data)
+        f.close()
+        print("File Transferred Successgully")
+        s.close()
 
 if __name__ == "__main__":
     main()
